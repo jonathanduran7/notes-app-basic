@@ -2,24 +2,14 @@
 
 import { Form, Formik } from "formik"
 import { schema } from "./schema/schema";
-import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import { AuthContext } from "../context/auth/auth.context";
 
 export default function Login() {
 
-    const router = useRouter();
+    const { login } = useContext(AuthContext);
 
-    const handleSubmit = (values: { email: string, password: string }) => {
-        const validUser = {
-            email: 'admin@gmail.com',
-            password: 'admin123'
-        }
-
-        if (values.email === validUser.email && values.password === validUser.password) {
-            router.push('/notes');
-        } else {
-            alert('Login failed');
-        }
-    }
+    const handleSubmit = (values: { email: string, password: string }) => login(values.email, values.password)
 
     return (
         <div className="min-h-screen flex flex-col justify-center items-center">
