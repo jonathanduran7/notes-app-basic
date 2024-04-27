@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import { initialValues, schema } from "../schema";
 import { Note } from "../page";
+import CustomInput from "@/app/components/input";
 
 interface Props {
     addNote: (note: Omit<Note, "id">) => void
@@ -18,30 +19,28 @@ export const FormNotes = ({ addNote }: Props) => {
                 {({ values, errors, touched, handleChange, handleBlur }) => (
                     <Form className="flex flex-col gap-2">
                         <div>
-                            <div className="w-72">
-                                <input
-                                    type="text"
-                                    name="title"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.title}
-                                    placeholder="Ingrese el titulo de la nota"
-                                    className="mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none border-gray-200" />
-                            </div>
-                            {errors.title && touched.title && <div className="text-red-500 text-xs mt-1">{errors.title}</div>}
+                            <CustomInput
+                                name="title"
+                                type="text"
+                                value={values.title}
+                                placeholder="Ingrese el titulo de la nota"
+                                errors={errors}
+                                touched={touched}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
                         </div>
                         <div>
-                            <div className="w-72">
-                                <input
-                                    type="text"
-                                    name="content"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.content}
-                                    placeholder="Ingrese el contenido de la nota"
-                                    className="mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none border-gray-200" />
-                            </div>
-                            {errors.content && touched.content && <div className="text-red-500 text-xs mt-1">{errors.content}</div>}
+                            <CustomInput
+                                name="content"
+                                type="text"
+                                value={values.content}
+                                placeholder="Ingrese el contenido de la nota"
+                                errors={errors}
+                                touched={touched}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
                         </div>
                         <div className="flex justify-center">
                             <button
