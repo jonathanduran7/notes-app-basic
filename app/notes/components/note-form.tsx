@@ -2,19 +2,18 @@ import { Form, Formik } from "formik";
 import { initialValues, schema } from "../schema";
 import { Note } from "../page";
 import CustomInput from "@/app/components/input";
+import { useNotes } from "../hooks";
 
-interface Props {
-    addNote: (note: Omit<Note, "id">) => void
-}
+export const FormNotes = () => {
 
-export const FormNotes = ({ addNote }: Props) => {
+    const { addNote } = useNotes()
+
     return (
         <div>
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values, actions) => { addNote(values); actions.resetForm() }}
                 validationSchema={schema}
-                onReset={() => console.log('reset')}
             >
                 {({ values, errors, touched, handleChange, handleBlur }) => (
                     <Form className="flex flex-col gap-2">

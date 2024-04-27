@@ -26,6 +26,7 @@ export default function Login() {
                         <div className="mt-4">
                             <div className="w-72">
                                 <input
+                                    autoComplete="off"
                                     type="email"
                                     name="email"
                                     onChange={handleChange}
@@ -40,6 +41,7 @@ export default function Login() {
                             <input
                                 type="password"
                                 name="password"
+                                autoComplete="off"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 value={values.password}
