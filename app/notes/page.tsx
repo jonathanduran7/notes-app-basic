@@ -1,12 +1,28 @@
 "use client"
-import PrivateRoutes from "../components/private-routes"
+
+import PrivateRoutes from "@/app/components/private-routes"
+import { FormNotes, NotesList } from './components'
+import { UseNotes } from "./hooks"
+
+export interface Note {
+    id: string
+    title: string
+    content: string
+}
 
 const Notes = () => {
+    const { addNote, notes } = UseNotes()
+
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center">
-            <div>
-                <h1 className="text-3xl font-bold text-gray-800">Notes</h1>
+        <div className="min-h-screen flex">
+            <div className="p-5">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-800 text-center mb-7">Notes</h1>
+                </div>
+                <FormNotes addNote={addNote} />
             </div>
+
+            <NotesList notes={notes} />
         </div>
     )
 }
