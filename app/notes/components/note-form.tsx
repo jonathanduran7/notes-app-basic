@@ -1,19 +1,25 @@
 import { Form, Formik } from "formik";
 import { initialValues, schema } from "../schema";
-import { Note } from "../page";
 import CustomInput from "@/app/components/input";
 import { useNotes } from "../hooks";
+import { INote } from "@/app/context/notes/notes.context";
 
 export const FormNotes = () => {
 
-    const { addNote } = useNotes()
+    const { addNote, editNote, currentNote } = useNotes();
+
+    const handleSubmit = (values: Omit<INote, "id">) => {
+        if (currentNote.id) editNote(currentNote.id, values)
+        else addNote(values)
+    }
 
     return (
         <div>
             <Formik
-                initialValues={initialValues}
-                onSubmit={(values, actions) => { addNote(values); actions.resetForm() }}
+                initialValues={currentNote}
+                onSubmit={(values, actions) => { handleSubmit(values); actions.resetForm() }}
                 validationSchema={schema}
+                enableReinitialize={true}
             >
                 {({ values, errors, touched, handleChange, handleBlur }) => (
                     <Form className="flex flex-col gap-2">

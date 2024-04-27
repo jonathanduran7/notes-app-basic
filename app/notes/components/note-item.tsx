@@ -7,10 +7,8 @@ interface Props {
 
 export const NoteItem = ({ note }: Props) => {
 
-    const {deleteNote} = useNotes()
+    const {deleteNote, selectNote} = useNotes()
 
-    const editNote = (id: string) => {}
-    
     return (
         <div className="border border-gray-200 p-3 mb-2 flex justify-between">
             <div>
@@ -27,7 +25,7 @@ export const NoteItem = ({ note }: Props) => {
 
                 <button
                     className="bg-blue-400 text-white px-3 py-1 rounded mt-2"
-                    onClick={() => editNote(note.id)}
+                    onClick={() => selectNote(note.id)}
                 >
                     Edit
                 </button>

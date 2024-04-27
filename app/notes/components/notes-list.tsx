@@ -1,5 +1,4 @@
 import { useNotes } from "../hooks"
-import { Note } from "../page"
 import { EmptyList } from "./empty-notes"
 import { NoteItem } from "./note-item"
 
