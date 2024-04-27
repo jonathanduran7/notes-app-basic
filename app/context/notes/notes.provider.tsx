@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { INote, NoteContext } from "./notes.context";
-
+import { sweetAlert, sweetAlertWarning } from "@/app/services/sweet-alert.service";
 interface Props {
     children: React.ReactNode
 }
@@ -16,6 +16,7 @@ export const NotesProvider = ({ children }: Props) => {
         localStorage.setItem('notes', JSON.stringify([...notes, newNote]))
         setNotes([...notes, newNote])
         setCurrentNote({ id: '', title: '', content: '' })
+        sweetAlert('success', 'Note added')
     }
 
     const getNotes = () => {
@@ -25,10 +26,14 @@ export const NotesProvider = ({ children }: Props) => {
         }
     }
 
-    const deleteNote = (id: string) => {
-        const newNotes = notes.filter(note => note.id !== id)
-        localStorage.setItem('notes', JSON.stringify(newNotes))
-        setNotes(newNotes)
+    const deleteNote = async (id: string) => {
+        const alert = await sweetAlertWarning('Are you sure?', 'You will not be able to recover this note!');
+        if (alert.isConfirmed) {
+            const newNotes = notes.filter(note => note.id !== id)
+            localStorage.setItem('notes', JSON.stringify(newNotes))
+            setNotes(newNotes)
+            sweetAlert('success', 'Note deleted')
+        }
     }
 
     const editNote = (id: string, noteUpdate: Omit<INote, "id">) => {
@@ -36,6 +41,7 @@ export const NotesProvider = ({ children }: Props) => {
         localStorage.setItem('notes', JSON.stringify(newNotes))
         setNotes(newNotes)
         setCurrentNote({ id: '', title: '', content: '' })
+        sweetAlert('success', 'Note edited')
     }
 
     const selectNote = (id: string) => {
