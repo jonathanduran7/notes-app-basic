@@ -9,7 +9,7 @@ export const NotesList = () => {
     if (!notes.length) return <EmptyList />
 
     return (
-        <div className="flex-grow p-5">
+        <div className="flex-grow p-5 overflow-y-auto h-screen pb-20">
             {notes.map((note) => <NoteItem key={note.id} note={note}  />)}
         </div>
     )

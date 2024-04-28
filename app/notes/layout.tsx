@@ -15,7 +15,7 @@ function Layout({
 
     return (
         <NotesProvider>
-            <div>
+            <div className="overflow-hidden h-full">
                 <nav
                     className="flex justify-between items-center p-4 bg-gray-800 text-white"
                 >
