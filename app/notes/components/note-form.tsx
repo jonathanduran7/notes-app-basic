@@ -3,14 +3,17 @@ import { initialValues, schema } from "../schema";
 import CustomInput from "@/app/components/input";
 import { useNotes } from "../hooks";
 import { INote } from "@/app/context/notes/notes.context";
+import { useContext } from "react";
+import { AuthContext } from "@/app/context/auth/auth.context";
 
 export const FormNotes = () => {
 
+    const {user} = useContext(AuthContext)
     const { addNote, editNote, currentNote } = useNotes();
 
     const handleSubmit = (values: Omit<INote, "id">) => {
         if (currentNote.id) editNote(currentNote.id, values)
-        else addNote(values)
+        else addNote({ ...values, user: user!.email})
     }
 
     return (

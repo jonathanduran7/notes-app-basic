@@ -1,29 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { INote, NoteContext } from "./notes.context";
 import { sweetAlert, sweetAlertWarning } from "@/app/services/sweet-alert.service";
+import { AuthContext } from "../auth/auth.context";
+import { getLocalStorage } from "@/app/services/local-storage.service";
 interface Props {
     children: React.ReactNode
 }
 
 export const NotesProvider = ({ children }: Props) => {
 
+    const { user } = useContext(AuthContext)
     const [notes, setNotes] = useState<INote[]>([]);
-    const [currentNote, setCurrentNote] = useState<INote>({ id: '', title: '', content: '' });
+    const [currentNote, setCurrentNote] = useState<INote>({ id: '', title: '', content: '', user: '' });
 
     const addNote = (note: Omit<INote, "id">) => {
         const id = Math.random().toString(36).substr(2, 9)
         const newNote = { ...note, id }
         localStorage.setItem('notes', JSON.stringify([...notes, newNote]))
         setNotes([...notes, newNote])
-        setCurrentNote({ id: '', title: '', content: '' })
+        setCurrentNote({ id: '', title: '', content: '', user: '' })
         sweetAlert('success', 'Note added')
     }
 
     const getNotes = () => {
-        const notes = localStorage.getItem('notes')
-        if (notes) {
-            setNotes(JSON.parse(notes))
-        }
+        const notes = getLocalStorage<INote>('notes');
+        if (user?.role === 'admin') return setNotes(notes)
+        setNotes(notes.filter(note => note.user === user?.email))
     }
 
     const deleteNote = async (id: string) => {
@@ -40,7 +42,7 @@ export const NotesProvider = ({ children }: Props) => {
         const newNotes = notes.map(note => note.id === id ? { ...note, ...noteUpdate } : note)
         localStorage.setItem('notes', JSON.stringify(newNotes))
         setNotes(newNotes)
-        setCurrentNote({ id: '', title: '', content: '' })
+        setCurrentNote({ id: '', title: '', content: '', user: '' })
         sweetAlert('success', 'Note edited')
     }
 
@@ -64,4 +66,4 @@ export const NotesProvider = ({ children }: Props) => {
             {children}
         </NoteContext.Provider>
     )
-}
+};

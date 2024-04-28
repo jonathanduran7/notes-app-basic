@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNotes } from "../hooks"
-import { Note } from "../page"
+import { INote } from "@/app/context/notes/notes.context"
+import { AuthContext } from "@/app/context/auth/auth.context"
 
 interface Props {
-    note: Note
+    note: INote
 }
 
 export const NoteItem = ({ note }: Props) => {
 
+    const { user } = useContext(AuthContext)
     const [isNoteSelected, setIsNoteSelected] = useState(false)
     const { deleteNote, selectNote, currentNote } = useNotes()
 
@@ -23,6 +25,11 @@ export const NoteItem = ({ note }: Props) => {
         <div className={`border border-gray-200 p-3 mb-2 flex justify-between ${isNoteSelected && 'bg-gray-200'}`}>
             <div>
                 <h3 className="text-lg font-bold uppercase">{note.title}</h3>
+                {
+                    user?.role === 'admin' && (
+                        <p className="text-xs text-gray-400">{note?.user}</p>
+                    )
+                }
                 <p>{note.content}</p>
             </div>
             <div className="flex gap-2">

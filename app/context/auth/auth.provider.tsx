@@ -6,6 +6,11 @@ interface IAuthProvider {
     children: React.ReactNode
 }
 
+const usersValid = [
+    { email: 'admin@gmail.com', password: 'admin123', role: 'admin' },
+    { email: 'joni@gmail.com', password: '123456', role: 'user' }
+]
+
 export const AuthProvider = ({ children }: IAuthProvider) => {
 
     const { push } = useRouter();
@@ -13,22 +18,18 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     const [user, setUser] = useState<IUser | null>(null)
 
     const login = (email: string, password: string) => {
-        const validUser = {
-            email: 'admin@gmail.com',
-            password: 'admin123'
-        }
+        const validUser = usersValid.find(user => user.email === email);
 
-        if (email === validUser.email && password === validUser.password) {
-            alert('Login success');
-            setUser({ email: email, name: 'Admin' });
-            localStorage.setItem('user', JSON.stringify({ email: email, name: 'Admin' }));
+        if (email === validUser?.email && password === validUser?.password) {
+            setUser({ email: email, name: 'Admin', role: validUser?.role });
+            localStorage.setItem('user', JSON.stringify({ email: email, name: 'Admin', role: validUser?.role }));
             push('/notes');
         } else {
             alert('Login failed');
         }
     }
 
-    const logout = () => { 
+    const logout = () => {
         setUser(null);
         push('/login');
         localStorage.removeItem('user');
