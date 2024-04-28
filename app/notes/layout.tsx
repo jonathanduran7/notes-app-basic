@@ -1,34 +1,18 @@
 "use client"
 
-import { useContext } from "react";
 import { NotesProvider } from "../context/notes/notes.provider";
-import { AuthContext } from "../context/auth/auth.context";
 import PrivateRoutes from "../components/private-routes";
+import Navbar from "./components/navbar";
 
 function Layout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-
-    const { logout } = useContext(AuthContext)
-
     return (
         <NotesProvider>
             <div className="overflow-hidden h-full">
-                <nav
-                    className="flex justify-between items-center p-4 bg-gray-800 text-white"
-                >
-                    <div>NOTES APP</div>
-                    <div>
-                        <button
-                            className="px-2 py-1 bg-gray-700 text-white rounded-md"
-                            onClick={() => logout()}
-                        >
-                            Logout
-                        </button>
-                    </div>
-                </nav>
+                <Navbar />
                 {children}
             </div>
         </NotesProvider>
