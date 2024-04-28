@@ -13,7 +13,7 @@ export default function Navbar() {
             <div>NOTES APP</div>
             <div className="flex items-center gap-2">
                 <div>
-                    <span className="mr-2">{user?.email}</span>
+                    <span className="mr-2 text-xs">{user?.email}</span>
                 </div>
                 <button
                     className="px-2 py-1 bg-gray-700 text-white rounded-md"
