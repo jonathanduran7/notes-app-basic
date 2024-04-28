@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { use, useEffect, useState } from "react"
 import { AuthContext, IUser } from "./auth.context"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 
 interface IAuthProvider {
     children: React.ReactNode
@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
         if (email === validUser.email && password === validUser.password) {
             alert('Login success');
             setUser({ email: email, name: 'Admin' });
+            localStorage.setItem('user', JSON.stringify({ email: email, name: 'Admin' }));
             push('/notes');
         } else {
             alert('Login failed');
@@ -30,7 +31,15 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     const logout = () => { 
         setUser(null);
         push('/login');
+        localStorage.removeItem('user');
     }
+
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (user) {
+            setUser(JSON.parse(user));
+        }
+    }, [])
 
     return (
         <AuthContext.Provider value={{ login, logout, user }}>

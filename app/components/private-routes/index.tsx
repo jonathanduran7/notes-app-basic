@@ -10,6 +10,7 @@ export default function PrivateRoutes(Component: any) {
         const { user } = useContext(AuthContext)
 
         useEffect(() => {
+            const user = localStorage.getItem('user')
             if (!user) {
                 redirect('/login')
             }
@@ -19,5 +20,4 @@ export default function PrivateRoutes(Component: any) {
 
         return <Component {...props} />
     }
-
 }
